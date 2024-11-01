@@ -97,7 +97,7 @@ no *buscaPaiR(no *raiz, no *n)
 }
 no *buscaPaiI(no *raiz, no *n)
 {
-    while (raiz != NULL)
+    while (raiz != NULL && raiz != n)
     {
         // Verifica se o o lado esquerdo ou direito da raiz é o valor buscado.
         if (raiz->esq == n || raiz->dir == n)
@@ -180,10 +180,6 @@ int main()
     int a = 0, x;
     no *raiz = NULL, *n;
 
-    /*printf("Digite 1 para inserir.\n");
-    printf("Digite 2 para remover.\n");
-    printf("Digite -1 para sair.\n");*/
-
     while (a >= 0)
     {
         scanf("%d", &a);
@@ -191,34 +187,40 @@ int main()
         switch (a)
         {
         case 1:
-        {
             n = malloc(sizeof(no));
-            n->dir = NULL; // Inicialização dos ponteiros
+            n->dir = NULL;
             n->esq = NULL;
             printf("Digite o no que deseja adicionar.\n");
             scanf("%d", &n->valor);
             raiz = insere(raiz, n);
-            printf("O no foi adicionada com sucesso!\n");
+            printf("O no foi adicionado com sucesso!\n");
             break;
-        }
+
         case 2:
-        {
-            printf("Qual no voce deseja remover??\n"); // COMMIT
+            printf("Qual no voce deseja remover?\n");
             scanf("%d", &x);
-            no *removido = removeNo(raiz, x);
-            if (removido == NULL)
+
+            // Primeiro verifica se o elemento existe
+            no *elemento = buscaI(raiz, x);
+            if (elemento == NULL)
             {
-                printf("Elemento Inexistente ou lista vazia!\n\n");
+                printf("Elemento nao encontrado!\n\n");
             }
             else
             {
-                printf("A elemento foi removido com sucesso!\n\n");
+                raiz = removeNo(raiz, x);
+                if (raiz == NULL)
+                {
+                    printf("Elemento removido. Arvore ficou vazia!\n\n");
+                }
+                else
+                {
+                    printf("Elemento removido com sucesso!\n\n");
+                }
             }
             break;
         }
-        }
     }
     imprimePreOrdem(raiz);
-
     return 0;
 }
